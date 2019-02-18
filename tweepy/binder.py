@@ -89,7 +89,8 @@ def bind_api(**config):
             self._reset_time = None
 
         def build_parameters(self, args, kwargs):
-            if '/direct_messages/events/new.json' in self.path:
+            resource_urls = ['/direct_messages/events/new.json', '/direct_messages/events/list.json']
+            if self.path in resource_urls:
                 args = ()
                 kwargs = {}
             
