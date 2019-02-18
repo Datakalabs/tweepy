@@ -417,6 +417,17 @@ class API(object):
             allowed_param=['since_id', 'max_id', 'count', 'full_text'],
             require_auth=True
         )
+    
+    @property
+    def direct_messages_new(self):
+        """ :reference: https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/new-event.html
+        """
+        return bind_api(
+            api=self,
+            path = '/direct_messages/events/list.json',
+            payload_type='direct_message_new', payload_list=True,
+            require_auth=True
+        )(self)
 
     @property
     def get_direct_message(self):
