@@ -427,7 +427,7 @@ class API(object):
             path = '/direct_messages/events/list.json',
             payload_type='direct_message_new', payload_list=True,
             require_auth=True
-        )(self)
+        )
 
     @property
     def get_direct_message(self):
