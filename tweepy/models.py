@@ -218,6 +218,35 @@ class DirectMessage(Model):
 
     def destroy(self):
         return self._api.destroy_direct_message(self.id)
+    
+class DirectMessageNew(Model):
+
+    @classmethod
+    def parse(cls, api, json):
+        dm = cls(api)
+        for k, v in json.items():
+            if k == 'sender' or k == 'recipient':
+                setattr(dm, k, User.parse(api, v))
+            elif k == 'created_at':
+                setattr(dm, k, parse_datetime(v))
+            else:
+                setattr(dm, k, v)
+        return dm
+
+    @classmethod
+    def parse_list(cls, api, json_list):
+        """
+            Parse a list of JSON objects into
+            a result set of model instances.
+        """
+        results = ResultSet()
+        for obj in json_list['events']:
+            if obj:
+                results.append(cls.parse(api, obj))
+        return results
+
+    # def destroy(self):
+    #     return self._api.destroy_direct_message_new(self.id)    
 
 
 class Friendship(Model):
@@ -480,6 +509,7 @@ class ModelFactory(object):
     status = Status
     user = User
     direct_message = DirectMessage
+    direct_message_new = DirectMessageNew
     friendship = Friendship
     saved_search = SavedSearch
     search_results = SearchResults
